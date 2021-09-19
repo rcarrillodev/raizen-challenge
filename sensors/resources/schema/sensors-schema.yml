@@ -1,24 +1,66 @@
 openapi: 3.0.0
 info:
-  title: Sample API
-  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
-  version: 0.1.9
+  title: Sensors Challenge API
+  description: Sensors API
+  version: 0.0.1
 servers:
-  - url: http://api.example.com/v1
-    description: Optional server description, e.g. Main (production) server
-  - url: http://staging-api.example.com
-    description: Optional server description, e.g. Internal staging server for testing
+  - url: http://localhost:8000/sensors/v1
+security:
+ - basicAuth: []
 paths:
-  /users:
+  /data:
     get:
-      summary: Returns a list of users.
-      description: Optional extended description in CommonMark or HTML.
+      summary: Returns the sensors data using the request parameters to limit the number of results
+      parameters:
+        - in: query
+          name: field
+          schema:
+            type: string
+        - in: query
+          name: sort
+          schema:
+            type: array
+            items:
+              type: string
+              enum: 
+                - Ascending
+                - Descending
+        - in: query
+          name: range
+          schema:
+            type: string
       responses:
-        '200':    # status code
-          description: A JSON array of user names
+        '200':    
+          description: JSON containing a set of sensors data 
           content:
             application/json:
               schema: 
                 type: array
                 items: 
-                  type: string
+                  $ref: '#/components/schemas/Data'
+        '404':
+          description: Service not available
+        '5XX':
+          description: Internal server error
+components:
+  schemas:
+    Data:
+      properties:
+        time:
+          type: string
+          format: date-time
+        temp:
+          type: number
+          format: float
+        co2:
+          type: number
+          format: float
+        humidity:
+          type: number
+          format: float
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic  
+        
+

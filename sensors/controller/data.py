@@ -8,6 +8,6 @@ class Resource:
         self.dataSet = dataSet
         pass
     def on_get(self,req,resp):
-        test = self.dataSet.nlargest(1,'CO2')
-        resp.text = test.to_json()
-        resp.status = falcon.HTTP_200
+        field = req.get_param('field')
+        print(field)
+        return 'holi'
