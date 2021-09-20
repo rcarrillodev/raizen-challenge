@@ -7,7 +7,6 @@ class DataService:
 
     def queryData(self, field):
         rawData = self._csvParser.query(field)
-        print(rawData)
         result = []
         for d in rawData:
             result.append(Data(d.time, d.temp, d.co2, d.humidity))
