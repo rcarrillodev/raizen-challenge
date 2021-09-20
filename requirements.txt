@@ -1,3 +1,6 @@
 pandas
 falcon
 gunicorn
+sqlalchemy
+pyMysql
+aumbry[yaml]

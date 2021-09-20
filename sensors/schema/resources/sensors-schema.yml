@@ -7,28 +7,32 @@ servers:
   - url: http://localhost:8000/sensors/v1
 security:
  - basicAuth: []
+tags: 
+  - name: Sensors Data
+    description: Gets the sensors data
 paths:
   /data:
     get:
+      tags: 
+        - Sensors Data
       summary: Returns the sensors data using the request parameters to limit the number of results
       parameters:
         - in: query
-          name: field
+          name: sort-by
           schema:
             type: string
-        - in: query
-          name: sort
-          schema:
-            type: array
-            items:
-              type: string
-              enum: 
-                - Ascending
-                - Descending
+          example: CO2:ASC, Temp:DSC
         - in: query
           name: range
           schema:
             type: string
+            example: 10-01-2020:10-31-2020
+        - in: query
+          name: limit
+          schema:
+            type: number
+            format: int
+            example: 10
       responses:
         '200':    
           description: JSON containing a set of sensors data 
@@ -48,16 +52,19 @@ components:
       properties:
         time:
           type: string
-          format: date-time
+          example: "2015-08-06 16:29:40"
         temp:
           type: number
-          format: float
+          format: double
+          example: 35.0
         co2:
           type: number
-          format: float
+          format: double
+          example: 2000
         humidity:
           type: number
-          format: float
+          format: double
+          example: 34.0
   securitySchemes:
     basicAuth:
       type: http
