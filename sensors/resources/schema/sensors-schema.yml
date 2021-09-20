@@ -1,0 +1,66 @@
+openapi: 3.0.0
+info:
+  title: Sensors Challenge API
+  description: Sensors API
+  version: 0.0.1
+servers:
+  - url: http://localhost:8000/sensors/v1
+security:
+ - basicAuth: []
+paths:
+  /data:
+    get:
+      summary: Returns the sensors data using the request parameters to limit the number of results
+      parameters:
+        - in: query
+          name: field
+          schema:
+            type: string
+        - in: query
+          name: sort
+          schema:
+            type: array
+            items:
+              type: string
+              enum: 
+                - Ascending
+                - Descending
+        - in: query
+          name: range
+          schema:
+            type: string
+      responses:
+        '200':    
+          description: JSON containing a set of sensors data 
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Data'
+        '404':
+          description: Service not available
+        '5XX':
+          description: Internal server error
+components:
+  schemas:
+    Data:
+      properties:
+        time:
+          type: string
+          format: date-time
+        temp:
+          type: number
+          format: float
+        co2:
+          type: number
+          format: float
+        humidity:
+          type: number
+          format: float
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic  
+        
+
