@@ -1,0 +1,17 @@
+CREATE DATABASE IF NOT EXISTS sensors;
+USE sensors;
+DROP TABLE IF EXISTS data;
+CREATE TABLE data (
+	data_id INT AUTO_INCREMENT PRIMARY KEY,
+	time TIMESTAMP NOT NULL, 
+	power INT DEFAULT 0,
+	temp INT DEFAULT 0,
+	humidity INT DEFAULT 0,
+	light INT DEFAULT 0,
+	co2 INT DEFAULT 0,
+	dust DOUBLE DEFAULT 0
+);
+LOAD DATA INFILE '/tmp/raizen-challenge-db/sensor-data.csv' IGNORE
+INTO TABLE sensors.data
+FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n' IGNORE 1 LINES (time,power,temp,humidity,light,CO2,dust);

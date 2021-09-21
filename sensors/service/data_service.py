@@ -1,3 +1,4 @@
+from sqlalchemy.sql.roles import OrderByRole
 from sensors.dto.data_dto import Data as DataDTO
 from sensors.dao.model.data_model import Data
 from sensors.service import DataAccessService
@@ -15,15 +16,23 @@ class DataService(DataAccessService):
         with session.begin():
             query = session.query(Data)
             if sortBy:
-                sortStatement = sortBy.split(':')
-                if(sortStatement[1] == 'ASC'):
-                    query = query.order_by(asc(text(sortStatement[0])))
-                if(sortStatement[1] == 'DSC'):
-                    query = query.order_by(desc(text(sortStatement[0])))
+                if ':' in sortBy:
+                    sortStatement = sortBy.split(':')
+                    field = sortStatement[0]
+                    order = sortStatement[1]
+                    if order in ['ASC','DESC']:
+                        query = query.order_by(text(field+' '+order))
+                else:
+                    query = query.order_by(text(sortBy))
+            if range:
+                rangeStatement = range.split(':')
+                if(len(rangeStatement)==3):
+                    query = query.filter(text('{} BETWEEN "{}" AND "{}"'.format(*rangeStatement)))
             if not limit:
                 query = query.limit(10)
             else:
                 query = query.limit(limit)
+        
             models = query
         return models
 

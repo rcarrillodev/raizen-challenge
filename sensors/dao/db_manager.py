@@ -8,7 +8,7 @@ class DBManager(object):
     def __init__(self, connection=None):
         self.connection = connection
 
-        self.engine = sqlalchemy.create_engine(self.connection)
+        self.engine = sqlalchemy.create_engine(self.connection,echo=True)
         self.DBSession = scoping.scoped_session(
             orm.sessionmaker(
                 bind=self.engine,

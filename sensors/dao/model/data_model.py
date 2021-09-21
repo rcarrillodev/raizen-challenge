@@ -8,7 +8,7 @@ class Data(SAModel):
     __tablename__ = 'data'
 
     data_id = sa.Column(sa.Integer, primary_key= True)
-    time = sa.Column(sa.Integer)
+    time = sa.Column(sa.DATETIME)
     temp = sa.Column(sa.Integer)
     co2 = sa.Column(sa.Integer)
     humidity = sa.Column(sa.Integer)
