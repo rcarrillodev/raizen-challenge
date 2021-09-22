@@ -2,6 +2,7 @@ import pprint
 
 import six
 import typing
+import datetime
 
 from sensors import util
 
@@ -44,6 +45,8 @@ class Model(object):
                     if hasattr(item[1], "to_dict") else item,
                     value.items()
                 ))
+            elif isinstance(value, datetime.datetime):
+                result[attr] = value.isoformat()
             else:
                 result[attr] = value
 

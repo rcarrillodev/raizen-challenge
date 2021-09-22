@@ -1,16 +1,25 @@
 version: "3.3"  
 services:
-  db:
-    image: postgres
+  sensors-db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password --secure-file-priv=/tmp/raizen-challenge-db
+    restart: always
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      MYSQL_ROOT_PASSWORD: fluffy
     ports:
-      - 5432:5432
-  webApp:
+      - 3306:3306
+    cap_add:
+      - SYS_NICE  
+    healthcheck:
+            test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD']
+            timeout: 20s
+            retries: 10
+    volumes:
+    - ./sensors-database/:/tmp/raizen-challenge-db/
+    - ./sensors-database/createdb.sql:/docker-entrypoint-initdb.d/createdb.sql
+  sensors-service:
     image: sensors-service
     ports:
       - 8000:8000
-    depends_on: 
-      - db
+    depends_on:
+      - sensors-db

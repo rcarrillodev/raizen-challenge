@@ -9,10 +9,10 @@ class Resource:
         pass
 
     def on_get(self,req,resp):
-        field = req.get_param('field')
-        sort = req.get_param('sort')
+        sortBy = req.get_param('sort-by')
         range = req.get_param('range')
-        result = self._dataService.queryData(field)
+        limit = req.get_param('limit')
+        result = self._dataService.queryData(sortBy,range,limit)
         resp.text = json.dumps([d.to_dict() for d in result])
         resp.content_type = falcon.MEDIA_JSON
         resp.status = falcon.HTTP_200

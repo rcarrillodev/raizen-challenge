@@ -1,0 +1,8 @@
+---
+  db:
+    connection: mysql+pymysql://root:fluffy@sensors-db:3306/sensors
+    #connection: mysql+pymysql://root:fluffy@localhost:3306/sensors
+  gunicorn:
+    bind: 0.0.0.0:8000
+    workers: 1
+    timeout: 30
