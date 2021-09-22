@@ -20,19 +20,19 @@ class DataService(DataAccessService):
                     sortStatement = sortBy.split(':')
                     field = sortStatement[0]
                     order = sortStatement[1]
-                    if order in ['ASC','DESC']:
-                        query = query.order_by(text(field+' '+order))
+                    if order == 'ASC':
+                        query = query.order_by(asc(getattr(Data, field)))
+                    elif order == 'DESC':
+                        query = query.order_by(desc(getattr(Data,field)))
                 else:
                     query = query.order_by(text(sortBy))
             if range:
-                rangeStatement = range.split(':')
-                if(len(rangeStatement)==3):
-                    query = query.filter(text('{} BETWEEN "{}" AND "{}"'.format(*rangeStatement)))
+                field,lower,upper = range.split(':')
+                query = query.filter(getattr(Data, field).between(lower,upper))
             if not limit:
                 query = query.limit(10)
             else:
                 query = query.limit(limit)
-        
             models = query
         return models
 

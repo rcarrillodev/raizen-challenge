@@ -5,8 +5,6 @@ info:
   version: 0.0.1
 servers:
   - url: http://localhost:8000/sensors/v1
-security:
- - basicAuth: []
 tags: 
   - name: Sensors Data
     description: Gets the sensors data
@@ -15,20 +13,30 @@ paths:
     get:
       tags: 
         - Sensors Data
-      summary: Returns the sensors data using the request parameters to limit the number of results
+      summary: Returns the sensors data using the request parameters to limit the number of results.
+      description: |
+        The format is **field:order**, where order can be `DSC` for descending sort or `ASC` for ascending sort
+        The available fields are: 
+          - time
+          - temp 
+          - co2 
+          - humidity 
       parameters:
         - in: query
           name: sort-by
+          description: Specifies the field used for the sorting and the order (ascending or descending)
           schema:
             type: string
-          example: CO2:ASC, Temp:DSC
+          example: co2:ASC
         - in: query
           name: range
+          description: Specifies the field and range of data to be fetched (a range of data like numbers or dates)
           schema:
             type: string
-            example: 10-01-2020:10-31-2020
+            example: time:2015-08-06:2015-08-07
         - in: query
           name: limit
+          description: Specify the maximum number of results returned by the service.If no limit is specified it will return 20 entries by default
           schema:
             type: number
             format: int
@@ -65,9 +73,5 @@ components:
           type: number
           format: double
           example: 34.0
-  securitySchemes:
-    basicAuth:
-      type: http
-      scheme: basic  
         
 
