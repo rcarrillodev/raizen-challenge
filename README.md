@@ -6,7 +6,7 @@ The project contains a Docker file to build an image of the service that can be 
 
 ----
 
-##How to deploy with docker
+## How to deploy with docker
 
 - Ensure that you have docker and docker-compose installed
 - Run `docker build . -t sensors-service` (this will create our image)
